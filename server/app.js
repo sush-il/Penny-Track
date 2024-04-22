@@ -10,10 +10,10 @@ app.use(cors());
 const liveClientID = process.env.LIVE_CLIENT_ID;
 const liveClientSecret = process.env.LIVE_CLIENT_SECRET;
 
-const sandboxClientID = process.env.SANDBOX_CLIENT_ID;
-const sandboxClientSecret = process.env.SANDBOX_CLIENT_SECRET;
+// const sandboxClientID = process.env.SANDBOX_CLIENT_ID;
+// const sandboxClientSecret = process.env.SANDBOX_CLIENT_SECRET;
 
-const redirectURI = process.env.REDIRECT_URI;
+// const redirectURI = process.env.REDIRECT_URI;
 const frontEndURI = "http://localhost:3000/"
 
 const liveRedirectPath = "https://auth.truelayer.com/?response_type=code&client_id=pennytrack-fe3de0&scope=info%20accounts%20balance%20cards%20transactions%20direct_debits%20standing_orders%20offline_access&redirect_uri=http://localhost:3000/callback&providers=uk-cs-mock%20uk-ob-all%20uk-oauth-all"
@@ -74,7 +74,22 @@ app.get("/getAccounts", async(req,res)=>{
 
     try{
         const response = await axios.request(options);
-        console.log(response);
+        const requiredData = response.data.results.map((data) => (
+            {
+                accountId: data.account_id,
+                accountType: data.account_type,
+                displayName: data.display_name,
+                accountNumber: data.account_number,
+                provider: {
+                    displayName: data.provider.display_name,
+                    providerId: data.provider.provider_id,
+                    logoUri: data.provider.logo_uri
+                },
+            }
+        ))
+        
+        res.json(requiredData);
+    
     }catch(error){
         console.log(`Couldn't get user accounts: ${error}`)
         res.send(error);
