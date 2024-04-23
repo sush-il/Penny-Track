@@ -7,9 +7,9 @@ export interface accountDetailProp{
 }
 export interface accountNumberProp{
     iban: string,
-    swift_bic: string,
+    swiftBic: string,
     number: string,
-    sort_code: string,
+    sortCode: string,
 }
 
 export interface providerDetailProp {

@@ -16,7 +16,7 @@ const liveClientSecret = process.env.LIVE_CLIENT_SECRET;
 // const redirectURI = process.env.REDIRECT_URI;
 const frontEndURI = "http://localhost:3000/"
 
-const liveRedirectPath = "https://auth.truelayer.com/?response_type=code&client_id=pennytrack-fe3de0&scope=info%20accounts%20balance%20cards%20transactions%20direct_debits%20standing_orders%20offline_access&redirect_uri=http://localhost:3000/callback&providers=uk-cs-mock%20uk-ob-all%20uk-oauth-all"
+const liveRedirectPath = `https://auth.truelayer.com/?response_type=code&client_id=pennytrack-fe3de0&scope=info%20accounts%20balance%20cards%20transactions%20direct_debits%20standing_orders%20offline_access&redirect_uri=http://localhost:3000/home&providers=uk-cs-mock%20uk-ob-all%20uk-oauth-all`
 const sandboxRedirectPath = "https://auth.truelayer-sandbox.com/?response_type=code&client_id=sandbox-pennytrack-fe3de0&scope=info%20accounts%20balance%20cards%20transactions%20direct_debits%20standing_orders%20offline_access&redirect_uri=http://localhost:5000/callback&providers=uk-cs-mock%20uk-ob-all%20uk-oauth-all"
 
 app.get("/login", (req,res) => {
@@ -43,7 +43,7 @@ app.get("/getToken", async (req,res) => {
                 client_id: liveClientID,
                 client_secret: liveClientSecret,
                 code: authCode,
-                redirect_uri: "http://localhost:3000/callback"
+                redirect_uri: `http://localhost:3000/home`
             }
           };
 
@@ -79,7 +79,13 @@ app.get("/getAccounts", async(req,res)=>{
                 accountId: data.account_id,
                 accountType: data.account_type,
                 displayName: data.display_name,
-                accountNumber: data.account_number,
+                accountNumber: {
+                    iban: data.account_number.iban,
+                    swiftBic: data.account_number.swift_bic,
+                    number: data.account_number.number,
+                    sortCode: data.account_number.sort_code,
+                },
+
                 provider: {
                     displayName: data.provider.display_name,
                     providerId: data.provider.provider_id,
