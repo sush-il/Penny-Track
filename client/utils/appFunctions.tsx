@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
-import { accountDetailProp } from "./dataProps";
+import { accountBalanceProp, accountDetailProp, transactionsProp } from "./dataProps";
 
 export const authorizeUser = async () => {
     window.location.href = "http://localhost:5000/login";
@@ -34,7 +34,10 @@ export const getUserAccounts = async (setAccounts:Dispatch<SetStateAction<accoun
         }
   };
 
-export const getBalanceAndTransactions = async(accountId:string, dataTypeToGet:string, setAccountBalance:Dispatch<SetStateAction<string>>) => {
+
+// setAccountBalance:Dispatch<SetStateAction<accountBalanceProp[]>>
+// callbackArray: accountBalanceProp[] | transactionsProp[]
+export const getBalanceAndTransactions = async(accountId:string, dataTypeToGet:string, callbackArray: accountBalanceProp[] | transactionsProp[]) => {
   try{
     const options = {
       method: "POST",
@@ -45,13 +48,23 @@ export const getBalanceAndTransactions = async(accountId:string, dataTypeToGet:s
         dataTypeToGet: dataTypeToGet
       }),
     }
+    
     const accountBalanceResponse = await fetch(" http://localhost:5000/getBalanceAndTransactions", options);
-    const data = await accountBalanceResponse.json();
-    setAccountBalance(data);
-
-    console.log(data);
-
+    
+    if(accountBalanceResponse.ok){
+      const data = await accountBalanceResponse.json();
+      callbackArray.push(data);
+      return data;
+    }
   }catch(error){
-
+    console.log("Error getting " + dataTypeToGet + error )
   }
+}
+
+const calculateTotalBalance = (allAccountsBalance:accountBalanceProp[]) => {
+  let totalBalance:number = 0;
+  allAccountsBalance.map((account)=>{
+    totalBalance += account.available;
+  })
+  return totalBalance;
 }
