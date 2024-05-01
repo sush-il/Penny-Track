@@ -127,6 +127,14 @@ app.post("/getBalanceAndTransactions", async(req,res) => {
             res.json(requiredData);
         } else{
             res.json(response.data.results);
+            // const requiredData = response.data.results.map((balance) =>(
+            //     {
+            //         currency: balance.currency,
+            //         available: balance.available,
+            //         current: balance.current,
+            //         overdraft: balance.overdraft,
+            //         updateTimestamp: balance.update_timestamp
+            //     }
         }
     }catch(error){
         console.log("Error getting Balance: " + error)

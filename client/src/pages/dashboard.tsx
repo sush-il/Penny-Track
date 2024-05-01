@@ -8,27 +8,33 @@ const Dashboard: React.FC<{accounts:accountDetailProp[]}> = ({accounts}) => {
     const [allAccountsTransactions, setAllAccountsTransactions] = useState<transactionsProp[]>([]);
 
     useEffect(()=>{
+      if(accounts.length!==0){
         fetchData();
+      }
     },[accounts])
+
+    const balanceTemp:Promise<accountBalanceProp>[] = [];
+    const transactionsTemp:Promise<transactionsProp>[] = [];
     
     //Basically currently the state is getting update whereas we want ot push the data; look into appFunctions will make sense
     const fetchData = async () => {
-      
-      const response = await getBalanceAndTransactions(accounts[0].accountId, "balance", allAccountsBalanceData)
       try{
-        console.log(response);
-
-
+        //const promises = accounts.map((account) => {getBalanceAndTransactions(account.accountId, "balance", allAccountsBalanceData)})
+        accounts.forEach(account => {
+          const balancePromise = getBalanceAndTransactions(account.accountId, "balance")
+          const transactionPromise = getBalanceAndTransactions(account.accountId, "transactions")
+          balanceTemp.push(balancePromise);
+          transactionsTemp.push(transactionPromise);
+        })
+        const balanceData = await Promise.all(balanceTemp);
+        const transactionData = await Promise.all(transactionsTemp);
+        setAllAccountsBalanceData(balanceData);
+        setAllAccountsTransactions(transactionData)
       }catch(error){
-
+        console.log("Couldn't get Balance and Transactions")
       }
     };
-
-    //const balances = await Promise.all(balancePromises);
-    //console.log(balances);
-    //setAllAccountsBalanceData(balances);
-
-    //console.log(allAccountsBalanceData)
+    
     
     return (
         <div className="grid grid-cols-1 gap-3 col-span-1 w-full pt-2 lg:grid-cols-2">
@@ -74,38 +80,21 @@ const Dashboard: React.FC<{accounts:accountDetailProp[]}> = ({accounts}) => {
               allAccountsBalanceData.map((account:accountBalanceProp, index)=>(
                 <div key={index}>
                   <p> {account.available} </p>
-                  <p> {account.currency} </p>
-                  {/* <p> {account.accountNumber.number} </p>
-                  <img src={account.provider.logoUri} alt="Provider Image" />      */}
-                  {/* <p> balance: {accountBalance} </p>      */}
                 </div>
 
               )) 
             }
-{/* 
+
             {
               allAccountsTransactions.map((transaction:transactionsProp)=>(
                 <div>
                     <p> {transaction.transactionId} </p>
                   </div>
               ))
-            } */}
+            }
           </div>
         </div>  
     )
 }
 
 export default Dashboard;
-
-// {
-//   accounts.map((account:accountDetailProp)=>(
-//     <div>
-//       <p> {account.displayName} </p>
-//       <p> {account.provider.displayName} </p>
-//       <p> {account.accountNumber.number} </p>
-//       <img src={account.provider.logoUri} alt="Provider Image" />     
-//       {/* <p> balance: {accountBalance} </p>      */}
-//     </div>
-
-//   )) 
-// }

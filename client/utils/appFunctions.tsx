@@ -1,5 +1,6 @@
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { accountBalanceProp, accountDetailProp, transactionsProp } from "./dataProps";
+import { json } from "react-router-dom";
 
 export const authorizeUser = async () => {
     window.location.href = "http://localhost:5000/login";
@@ -37,7 +38,7 @@ export const getUserAccounts = async (setAccounts:Dispatch<SetStateAction<accoun
 
 // setAccountBalance:Dispatch<SetStateAction<accountBalanceProp[]>>
 // callbackArray: accountBalanceProp[] | transactionsProp[]
-export const getBalanceAndTransactions = async(accountId:string, dataTypeToGet:string, callbackArray: accountBalanceProp[] | transactionsProp[]) => {
+export const getBalanceAndTransactions = async(accountId:string, dataTypeToGet:string) => {
   try{
     const options = {
       method: "POST",
@@ -53,8 +54,7 @@ export const getBalanceAndTransactions = async(accountId:string, dataTypeToGet:s
     
     if(accountBalanceResponse.ok){
       const data = await accountBalanceResponse.json();
-      callbackArray.push(data);
-      return data;
+      return data[0];
     }
   }catch(error){
     console.log("Error getting " + dataTypeToGet + error )
