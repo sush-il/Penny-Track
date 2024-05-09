@@ -1,100 +1,111 @@
 import { useEffect, useState } from "react";
-import { accountDetailProp, accountBalanceProp, transactionsProp } from "../../utils/dataProps";
-import { getBalanceAndTransactions } from "../../utils/appFunctions";
-
+import { accountDetailProp, accountBalanceProp, transactionsProp, dropdownAccountProp } from "../../utils/dataProps";
+import { getBalanceAndTransactions,  getSpendingCategories, calculateTotal } from "../../utils/dashboardFunctions";
+import DropdownButton from "../components/dropdownButton";
 
 const Dashboard: React.FC<{accounts:accountDetailProp[]}> = ({accounts}) => {
-    const [allAccountsBalanceData, setAllAccountsBalanceData] = useState<accountBalanceProp[]>([]);
-    const [allAccountsTransactions, setAllAccountsTransactions] = useState<transactionsProp[]>([]);
+  const [chosenMonth, setChosenMonth] = useState("");
+  const [chosenAccount, setChosenAccount] = useState("");
+  
+  const [allAccountNamesAndIds, setAllAccountNamesAndIds] = useState<dropdownAccountProp[]>([]);
+  const [totalBalance, setTotalBalance] = useState(0);
+  const [accountTransactions, setAccountTransactions] = useState([])
+  const months = ["January", "Feburary", "March", "April", "May", "June", "July", "August", "September", "November", "December"]
+  let balanceTemp:Promise<accountBalanceProp>[] = [];
+  let transactionsTemp:Promise<transactionsProp>[] = [];
 
-    useEffect(()=>{
-      if(accounts.length!==0){
-        fetchData();
-      }
-    },[accounts])
+  const getAllAccountNamesAndIds = () => {
+    if (accounts.length !== 0) {
+      const names = accounts.map(account => {
+        return {
+          name: account.displayName,
+          id: account.accountId
+        };
+      });
+      setAllAccountNamesAndIds(names);
+    }
+  };
+  
+  useEffect(()=>{
+    if(accounts.length !== 0){
+      getAllAccountNamesAndIds();
+      fetchData();
+    }
+  },[accounts, chosenAccount, chosenMonth])
 
-    const balanceTemp:Promise<accountBalanceProp>[] = [];
-    const transactionsTemp:Promise<transactionsProp>[] = [];
-    
-    //Basically currently the state is getting update whereas we want ot push the data; look into appFunctions will make sense
-    const fetchData = async () => {
-      try{
-        //const promises = accounts.map((account) => {getBalanceAndTransactions(account.accountId, "balance", allAccountsBalanceData)})
-        accounts.forEach(account => {
-          const balancePromise = getBalanceAndTransactions(account.accountId, "balance")
-          const transactionPromise = getBalanceAndTransactions(account.accountId, "transactions")
-          balanceTemp.push(balancePromise);
-          transactionsTemp.push(transactionPromise);
-        })
-        const balanceData = await Promise.all(balanceTemp);
-        const transactionData = await Promise.all(transactionsTemp);
-        setAllAccountsBalanceData(balanceData);
-        setAllAccountsTransactions(transactionData)
-      }catch(error){
-        console.log("Couldn't get Balance and Transactions")
-      }
-    };
-    
-    
-    return (
-        <div className="grid grid-cols-1 gap-3 col-span-1 w-full pt-2 lg:grid-cols-2">
-          <div className="inline-grid grid-cols-2 gap-3">
-            <div className="bg-red-400">
-              <p> Total Net Worth</p>
-              <p> £283, 349</p>
-            </div>
-            
-            <div className="bg-red-400">
-              <p> Spendings</p>
-              <p> £283, 349</p>
-            </div>
-            
-            <div className="bg-red-400">
-                <p> Net Worth Goal</p>
-                <p> £500, 349</p>
-            </div>
-            
-            <div className="bg-red-400">
-                <p> Total Net Worth</p>
-                <p> £283, 349</p>
-            </div>
+  useEffect(()=>{
+    if(accounts.length !== 0){
+      getAllAccountNamesAndIds();
+    }
+  },[])
+
+  
+  const fetchData = async () => {
+    try{  
+      const balancePromise = getBalanceAndTransactions(chosenAccount, months.indexOf(chosenMonth), "balance")
+      const transactionPromise = getBalanceAndTransactions(chosenAccount, months.indexOf(chosenMonth), "transactions")
+      
+      // balanceTemp.push(balancePromise);
+      // transactionsTemp.push(transactionPromise);
+
+      const balanceData = await balancePromise;;
+      const transactionsData = await transactionPromise;
+
+      console.log(balanceData);
+
+      // console.log(transactionsData);
+
+      // setTotalBalance(balanceData[0].available);
+
+    }catch(error){
+      console.log("Couldn't get Balance and Transactions")
+    }
+  };
+
+  return (
+      <div className="grid grid-cols-1 gap-3 col-span-1 w-full pt-2 lg:grid-cols-2">
+        <div className="inline-grid grid-cols-2 gap-3">
+          <div className="bg-red-400">
+            <p> Total Net Worth</p>
+            {/* <p>{totalBalance}</p> */}
           </div>
           
-          <div className="bg-green-400 gap">
-            <p> Spending Breakdown </p>
-            <p> £283, 349</p>
+          <div className="bg-red-400">
+            <p> Spendings</p>
+            {/* <p>{totalSpending}</p> */}
           </div>
           
-          <div className="bg-blue-400 gap">
-            <p> Money In vs Out </p>
-            <p> £283, 349</p>
+          <div className="bg-red-400">
+              <p> Net Worth Goal</p>
+              <p> £500, 349</p>
           </div>
           
-          <div className="bg-yellow-400 gap"> 
-            <p> Transactions </p>
-            <p> £283, 349</p> 
+          <div className="bg-red-400 flex flex-col place-items-center">
+              <DropdownButton dropdownDataType="Account" dropdownData={allAccountNamesAndIds} setChoiceCallback={setChosenAccount} />
+              <DropdownButton dropdownDataType="Month" dropdownData={months} setChoiceCallback={setChosenMonth} />
           </div>
-
-          <div>
-          {
-              allAccountsBalanceData.map((account:accountBalanceProp, index)=>(
-                <div key={index}>
-                  <p> {account.available} </p>
-                </div>
-
-              )) 
-            }
-
-            {
-              allAccountsTransactions.map((transaction:transactionsProp)=>(
-                <div>
-                    <p> {transaction.transactionId} </p>
-                  </div>
-              ))
-            }
-          </div>
-        </div>  
-    )
+        </div>
+        
+        <div className="bg-green-400 gap">
+          <p> Spending Breakdown </p>
+          <p> £283, 349</p>
+        </div>
+        
+        <div className="bg-blue-400 gap">
+          <p> Money In vs Out </p>
+          <p> £283, 349</p>
+        </div>
+        
+        <div className="bg-yellow-400 gap"> 
+          <p> Transactions </p>
+          {/* {
+            transactionCategories.map((category)=>(
+              <p>{category}</p>
+            ))
+          } */}
+        </div>
+      </div>  
+  )
 }
 
 export default Dashboard;

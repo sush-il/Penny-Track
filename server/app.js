@@ -55,9 +55,7 @@ app.get("/getToken", async (req,res) => {
 
 
 app.get("/getAccounts", async(req,res)=>{
-
     const accessToken = req.query.accessToken;
-
     const options = {
         method:"GET",
         url: "https://api.truelayer.com/data/v1/accounts",
@@ -67,6 +65,7 @@ app.get("/getAccounts", async(req,res)=>{
         }
     }
 
+    
     try{
         const response = await axios.request(options);
         const requiredData = response.data.results.map((data) => (
@@ -98,17 +97,22 @@ app.get("/getAccounts", async(req,res)=>{
 })
 
 app.post("/getBalanceAndTransactions", async(req,res) => {
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear();
     const accountId = req.body.accountId;
     const accessToken = req.body.accessToken;
     const dataTypeToGet = req.body.dataTypeToGet;
+    const getDataFrom = `${currentYear}-${req.body.monthNumber}-01`;
+    const getDataTo = `${currentYear}-${req.body.monthNumber}-31`;
     const options = {
         method: "GET",
-        url: `https://api.truelayer.com/data/v1/accounts/${accountId}/${dataTypeToGet}`,
+        url: `https://api.truelayer.com/data/v1/accounts/${accountId}/${dataTypeToGet}?from=${getDataFrom}&to=${getDataTo}`,
         headers: {
             accept: "application/json", 
             authorization: `Bearer ${accessToken}`
         }
     } 
+
     try{
         const response = await axios.request(options);
         if(dataTypeToGet === "transactions"){
@@ -127,14 +131,6 @@ app.post("/getBalanceAndTransactions", async(req,res) => {
             res.json(requiredData);
         } else{
             res.json(response.data.results);
-            // const requiredData = response.data.results.map((balance) =>(
-            //     {
-            //         currency: balance.currency,
-            //         available: balance.available,
-            //         current: balance.current,
-            //         overdraft: balance.overdraft,
-            //         updateTimestamp: balance.update_timestamp
-            //     }
         }
     }catch(error){
         console.log("Error getting Balance: " + error)

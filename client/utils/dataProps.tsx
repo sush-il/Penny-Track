@@ -1,3 +1,5 @@
+import { Dispatch, SetStateAction } from 'react';
+
 export interface accountBalanceProp {
     currency: string,
     available: number,
@@ -19,6 +21,17 @@ export interface accountNumberProp{
     swiftBic: string,
     number: string,
     sortCode: string,
+}
+
+export interface dropdownAccountProp {
+    id:string, 
+    name:string
+}
+
+export interface dropdownProp {
+    dropdownDataType: string;
+    dropdownData: dropdownAccountProp[] | string[];
+    setChoiceCallback: Dispatch<SetStateAction<string>>
 }
 
 export interface providerDetailProp {

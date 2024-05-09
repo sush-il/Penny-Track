@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import {accountDetailProp, accountBalanceProp} from "../utils/dataProps";
-import {getBalanceAndTransactions, getTokenFromCode, getUserAccounts} from "../utils/appFunctions";
+import {accountDetailProp} from "../utils/dataProps";
+import {getTokenFromCode, getUserAccounts} from "../utils/appFunctions";
 import Login from "./pages/login";
 import Sidebar from "./components/sidebar";
 import Dashboard from "./pages/dashboard";
@@ -10,7 +10,6 @@ function App() {
   const [accounts, setAccounts] = useState<accountDetailProp[]>([]);
   const [gotAccessToken, setGotAccessToken] = useState("");
   const sessionStorageAccessToken = sessionStorage.getItem('gotAccessToken');
-  const testAccountId = "56c7b029e0f8ec5a2334fb0ffc2fface";
 
   useEffect(() => {
     const code = new URLSearchParams(window.location.search).get("code");
