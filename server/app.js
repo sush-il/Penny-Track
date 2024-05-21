@@ -3,16 +3,19 @@ const cors = require('cors')
 const axios = require('axios')
 const app = express();
 const port = process.env.PORT || "5000"
+const { sequelize } = require('./models/userModel');
+const authSessions = require('./authSessions');
+
 require('dotenv').config();
 app.use(express.json());
 app.use(cors());
 
+authSessions(app);
 const liveClientID = process.env.LIVE_CLIENT_ID;
 const liveClientSecret = process.env.LIVE_CLIENT_SECRET;
 const redirectURI = process.env.REDIRECT_URI;
 
 const liveRedirectPath = `https://auth.truelayer.com/?response_type=code&client_id=${liveClientID}&scope=info%20accounts%20balance%20cards%20transactions%20direct_debits%20standing_orders%20offline_access&redirect_uri=${redirectURI}&providers=uk-cs-mock%20uk-ob-all%20uk-oauth-all`
-// const sandboxRedirectPath = "https://auth.truelayer-sandbox.com/?response_type=code&client_id=sandbox-pennytrack-fe3de0&scope=info%20accounts%20balance%20cards%20transactions%20direct_debits%20standing_orders%20offline_access&redirect_uri=http://localhost:5000/callback&providers=uk-cs-mock%20uk-ob-all%20uk-oauth-all"
 
 app.get("/login", (req,res) => {
     try{
@@ -52,7 +55,6 @@ app.get("/getToken", async (req,res) => {
     }
 
 })
-
 
 app.get("/getAccounts", async(req,res)=>{
     const accessToken = req.query.accessToken;
@@ -138,6 +140,10 @@ app.post("/getBalanceAndTransactions", async(req,res) => {
     }
 })
 
-app.listen(port, () => {
-    `Server Running at port: ${port}`
-})
+sequelize.sync().then(() => {
+  app.listen(port, () => {
+    console.log(`Server running on http://localhost:${port}`);
+  });
+}).catch(err => {
+  console.error('Unable to connect to the database:', err);
+});

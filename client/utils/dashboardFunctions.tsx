@@ -24,11 +24,10 @@ export const getBalanceAndTransactions = async(accountId:string, month:number, d
     }
   }
   
-export const calculateTotal = (allData: accountBalanceProp[] | transactionsProp[], dataType:string) => {
+export const calculateTotalSpending = (allTransactions: transactionsProp[]) => {
     let total:number = 0;
-    allData.map((account)=>{
-      if(dataType === "balance" && 'available' in account){ total += account.available;} 
-      else if(dataType === "spending" && 'amount' in account && account.amount < 0){ total += account.amount }
+    allTransactions.map((account)=>{
+      if('amount' in account && account.amount < 0){ total += account.amount }
       else {return "Data type invalid when calculating total"};
     })
     return total;
@@ -36,10 +35,19 @@ export const calculateTotal = (allData: accountBalanceProp[] | transactionsProp[
 
 export const getSpendingCategories = (allTransactions:transactionsProp[]) => {
     let categories:string[] = [];
-    allTransactions.forEach( transaction =>{
-        transaction.transactionClassification.forEach(element => {
+    allTransactions.forEach(transaction => {
+        (transaction.amount < 0 && transaction.transactionClassification.length > 0) && transaction.transactionClassification.forEach(element => {
             categories.push(element);
         })
     })
     return categories;
+}
+
+// Creates a map with all the transaction categories for spending
+export const getTransactionCategoryCount = (categories:string[]) => {
+  const countTable = new Map<string, number>();
+  categories.forEach(element => {
+    countTable.set(element, (countTable.get(element) ?? 0) + 1);
+  });
+  return countTable;
 }

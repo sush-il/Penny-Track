@@ -1,10 +1,6 @@
 import { Dispatch, SetStateAction} from "react";
 import { accountDetailProp} from "./dataProps";
 
-export const authorizeUser = async () => {
-    window.location.href = "http://localhost:5000/login";
-};
-
 export const getTokenFromCode = async (authorizationCode:string, setGotAccessToken:Dispatch<SetStateAction<string>>) => {
     try {
       const response = await fetch(`http://localhost:5000/getToken?code=${authorizationCode}`);

@@ -6,8 +6,7 @@ const DropdownButton:React.FC<dropdownProp> = ({dropdownDataType, dropdownData, 
     const [isOpen, setIsOpen] = useState(false);
     const [selectedData, setSelectedData] = useState("");
     const [selectedAccountName, setSelectedAccountName] = useState("");
-    setChoiceCallback(selectedData);
-
+    
     useEffect(()=>{
         if(dropdownDataType === "Month" && selectedData === ""){
             const currentDate = new Date();
@@ -18,8 +17,9 @@ const DropdownButton:React.FC<dropdownProp> = ({dropdownDataType, dropdownData, 
             setSelectedData(defaultData);
             setSelectedAccountName(dropdownData[0].name)
         }
+        setChoiceCallback(selectedData);
 
-    },[dropdownData])
+    },[dropdownData, selectedData])
 
     const toggleDropdown = () => {
         setIsOpen(!isOpen);
@@ -62,10 +62,10 @@ const DropdownButton:React.FC<dropdownProp> = ({dropdownDataType, dropdownData, 
             <div
                 className={`${isOpen ? '' : 'hidden'} transition-all duration-300 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700`}>
                 <ul className="overflow-scroll scroll-m-0 h-12 w-auto overflow-x-hidden absolute py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
-                    {dropdownData.map(data => {
+                    {dropdownData.map((data,index) => {
                         if (dropdownDataType === "Account" && 'id' in data) {
                             return (
-                                <li>
+                                <li key={index}>
                                     <button onClick={() => chooseData(data.id, data.name)} className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
                                         {data.name}
                                     </button>
@@ -73,7 +73,7 @@ const DropdownButton:React.FC<dropdownProp> = ({dropdownDataType, dropdownData, 
                             );
                         } else if (dropdownDataType === "Month" && typeof(data) == 'string') {
                             return (
-                                <li>
+                                <li key={index}>
                                     <button onClick={() => chooseData(data)} className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
                                         {data}
                                     </button>

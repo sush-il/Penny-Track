@@ -36,3 +36,13 @@
 3. **Express.js for Backend**: Express.js is a lightweight and flexible framework for building backend services in Node.js. It's well-suited for small to medium-sized applications and offers robust middleware support for handling HTTP requests and routing.
 4. P**ostgreSQL for database:** This approach would offer more flexibility and control over your application's architecture while minimizing dependencies on external services.
 5. **Passport.js with JWT for authentication**: Integrating Google authentication with Passport.js  middleware is straightforward and well-documented.
+
+
+### Problems and overall idea changes
+
+- Chose not to use passport js for now due to difficulty  in implementation
+- Using sequelize ORM which helps me build different models, to make it easier to implement in database
+- Using bcrypt to manually encrypt passwords 
+- Learning about good methods of implementing databases and how to work around auth
+- Authentication has been very difficult in terms of understanding and implementation 
+- Understanding express-sessions better and how to use them
