@@ -29,9 +29,11 @@ function App() {
     return <Login />
 
   return (
-    <div className="flex w-screen h-screen flex-row ">
+    <div className="w-screen min-h-screen flex">
       <Sidebar />
-      <Dashboard accounts={accounts}/>
+      <div className="">
+        <Dashboard accounts={accounts}/>
+      </div>
     </div>
   );
 }

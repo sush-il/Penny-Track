@@ -33,10 +33,8 @@ const DropdownButton:React.FC<dropdownProp> = ({dropdownDataType, dropdownData, 
         setIsOpen(false);
     }
 
-
-
     return (
-        <div>
+        <div className='relative overflow-hidden w-full flex flex-col justify-start'>
             <button
                 onClick={toggleDropdown}
                 className="text-white focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center"
@@ -59,14 +57,14 @@ const DropdownButton:React.FC<dropdownProp> = ({dropdownDataType, dropdownData, 
                     />
                 </svg>
             </button>
-            <div
-                className={`${isOpen ? '' : 'hidden'} transition-all duration-300 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700`}>
-                <ul className="overflow-scroll scroll-m-0 h-12 w-auto overflow-x-hidden absolute py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
+            
+            <div className={`${isOpen ? '' : 'hidden'} h-52 oveflow-hidden flex justify-center`}>
+                <ul className="h-2/3 absolute p-3 flex flex-col divide-y-2 divide-gray-500 bg-slate-400 overflow-scroll overflow-x-hidden text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
                     {dropdownData.map((data,index) => {
                         if (dropdownDataType === "Account" && 'id' in data) {
                             return (
                                 <li key={index}>
-                                    <button onClick={() => chooseData(data.id, data.name)} className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                    <button onClick={() => chooseData(data.id, data.name)} className="w-full block px-4 py-2 hover:bg-gray-100 dark:hover:bg-slate-300 dark:hover:text-white">
                                         {data.name}
                                     </button>
                                 </li>
@@ -83,6 +81,7 @@ const DropdownButton:React.FC<dropdownProp> = ({dropdownDataType, dropdownData, 
                     })}
                 </ul>
             </div>
+        
         </div>
     );
 }

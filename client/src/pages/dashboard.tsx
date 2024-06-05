@@ -66,9 +66,9 @@ const Dashboard: React.FC<{accounts:accountDetailProp[]}> = ({accounts}) => {
   };
 
   return (
-      <div className="grid grid-cols-1 gap-3 col-span-1 w-full pt-2 lg:grid-cols-2">
-        <div className="inline-grid grid-cols-2 gap-3">
-          <div className="bg-red-400">
+      <div className="w-full min-h-screen grid grid-cols-1 gap-3 col-span-1 pt-2 lg:grid-cols-2">
+        <div className="inline-grid grid-cols-1 gap-3 md:grid-cols-2">
+          <div className="bg-red-400 ">
             <p> Total Net Worth</p>
             <p>{totalBalance}</p> 
           </div>
@@ -84,8 +84,8 @@ const Dashboard: React.FC<{accounts:accountDetailProp[]}> = ({accounts}) => {
           </div>
           
           <div className="bg-red-400 flex flex-col place-items-center">
-              {/* <DropdownButton dropdownDataType="Account" dropdownData={allAccountNamesAndIds} setChoiceCallback={setChosenAccount} /> */}
-              {/* <DropdownButton dropdownDataType="Month" dropdownData={months} setChoiceCallback={setChosenMonth} /> */}
+              <DropdownButton dropdownDataType="Account" dropdownData={allAccountNamesAndIds} setChoiceCallback={setChosenAccount} />
+              <DropdownButton dropdownDataType="Month" dropdownData={months} setChoiceCallback={setChosenMonth} />
           </div>
         </div>
         
@@ -107,6 +107,7 @@ const Dashboard: React.FC<{accounts:accountDetailProp[]}> = ({accounts}) => {
             ))
           } */}
         </div>
+
       </div>  
   )
 }
