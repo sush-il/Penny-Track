@@ -29,9 +29,9 @@ function App() {
     return <Login />
 
   return (
-    <div className="w-screen min-h-screen flex">
+    <div className="bg-background text-text font-mono min-h-screen flex">
       <Sidebar />
-      <div className="">
+      <div className="w-full p-2">
         <Dashboard accounts={accounts}/>
       </div>
     </div>

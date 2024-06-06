@@ -65,50 +65,49 @@ const Dashboard: React.FC<{accounts:accountDetailProp[]}> = ({accounts}) => {
     }
   };
 
+  // grid grid-cols-auto gap-3 pt-2 lg:grid-cols-2
+
   return (
-      <div className="w-full min-h-screen grid grid-cols-1 gap-3 col-span-1 pt-2 lg:grid-cols-2">
-        <div className="inline-grid grid-cols-1 gap-3 md:grid-cols-2">
-          <div className="bg-red-400 ">
-            <p> Total Net Worth</p>
-            <p>{totalBalance}</p> 
-          </div>
-          
-          <div className="bg-red-400">
-            <p> Spendings</p>
-            <p>{totalSpending}</p>
-          </div>
-          
-          <div className="bg-red-400">
-              <p> Net Worth Goal</p>
-              <p> £500, 349</p>
-          </div>
-          
-          <div className="bg-red-400 flex flex-col place-items-center">
-              <DropdownButton dropdownDataType="Account" dropdownData={allAccountNamesAndIds} setChoiceCallback={setChosenAccount} />
-              <DropdownButton dropdownDataType="Month" dropdownData={months} setChoiceCallback={setChosenMonth} />
-          </div>
-        </div>
-        
-        <div className="bg-green-400 gap flex place-items-center flex-col justify-center">
-          <p> Spending Breakdown </p>
-          <SpendingChart spendingCategories={[...transactionCategoryCounts.keys()]} categoryCount={[...transactionCategoryCounts.values()]} />
-        </div>
-        
-        <div className="bg-blue-400 gap">
-          <p> Money In vs Out </p>
-          <p> £283, 349</p>
-        </div>
-        
-        <div className="bg-yellow-400 gap"> 
-          <p> Transactions </p>
-          {/* {
-            transactionCategories.map((category)=>(
-              <p>{category}</p>
-            ))
-          } */}
+    <div className="w-full min-h-screen grid grid-rows-2 grid-cols-1 gap-3 md:grid-cols-2">
+      <div className="inline-grid grid-rows-2 grid-cols-1 p-2 gap-3 lg:grid-cols-2">     
+        <div className="bg-green-400 rounded-md p-2 shadow-md shadow-slate-200 drop-shadow-xl">
+          <p className="text-xl"> Total Balance </p>
+          <p className="text-2xl"> £ {totalBalance} </p>
         </div>
 
-      </div>  
+        <div className="bg-green-400 rounded-md p-2">
+          <p className="text-xl"> Total Balance </p>
+          <p className="text-2xl"> £ {totalSpending} </p>
+        </div>
+
+        <div className="bg-green-400 rounded-md p-2">
+          <p className="text-xl"> Total Balance </p>
+          <p className="text-2xl"> £ {totalBalance} </p>
+        </div>
+
+        <div className="bg-green-400 rounded-md p-2">
+          <DropdownButton dropdownDataType="Account" dropdownData={allAccountNamesAndIds} setChoiceCallback={setChosenAccount} />
+          <DropdownButton dropdownDataType="Month" dropdownData={months} setChoiceCallback={setChosenMonth} />
+        </div>
+      </div>
+
+      <div className="w-full">
+        <h2 className="text-xl"> Spending Breakdown </h2>
+        <div className="container my-3 h-96">
+          <SpendingChart spendingCategories={[...transactionCategoryCounts.keys()]} categoryCount={[...transactionCategoryCounts.values()]} />
+        </div>
+      </div>
+
+      <div className="">
+        <h2> Spending Breakdown </h2>
+        {/* <SpendingChart spendingCategories={[...transactionCategoryCounts.keys()]} categoryCount={[...transactionCategoryCounts.values()]} /> */}
+      </div>
+
+      <div className="">
+        <h2> Spending Breakdown </h2>
+        {/* <SpendingChart spendingCategories={[...transactionCategoryCounts.keys()]} categoryCount={[...transactionCategoryCounts.values()]} /> */}
+      </div>
+    </div>
   )
 }
 

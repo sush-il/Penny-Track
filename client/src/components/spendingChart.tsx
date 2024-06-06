@@ -1,60 +1,35 @@
-import { Chart, ScaleOptions, registerables } from 'chart.js';
-import ChartDataLabels from 'chartjs-plugin-datalabels';
-import { Doughnut} from 'react-chartjs-2';
-Chart.register(...registerables, ChartDataLabels);
+import { ResponsivePie } from '@nivo/pie';
 
 const SpendingChart:React.FC<{spendingCategories:string[], categoryCount: number[]}> = ({spendingCategories, categoryCount}) => {
+    const data = spendingCategories.map((category,index)=>(
+        {
+            "id": category,
+            "label": category,
+            "value": categoryCount[index],
+        }
+    ))
     
-    const options = {
-        responsive: true,
-        maintainAspectRatio: false,
-        cutout: "50%",
-        plugins: {
-          legend: {display:false},
-          title: { display: true},
-          datalabels: {
-            color: 'black',
-            font: { weight: 'bold' },
-            padding: 10,
-        }},
+    return <ResponsivePie
+            data={data}
+            margin={{top:0, bottom:0, right: 120, left: 120 }} 
+            enableArcLabels={false}     
+            innerRadius={0.5}
+            padAngle={0.7}
+            cornerRadius={3}
+            activeOuterRadiusOffset={8}
+            borderWidth={1}
+            arcLinkLabelsSkipAngle={5}
+            arcLinkLabelsThickness={2}
+            arcLabelsSkipAngle={5}
+            colors={{scheme:'spectral'}}
+            arcLinkLabelsColor={{from:'color'}}
+            arcLinkLabelsTextColor = '#e2e8f0'
+            tooltip={({ datum: { id, value } }) => (
+              <strong className={`bg-red-400 p-2 rounded`}> {id}: {value} </strong>   
+            )}
+        />    
 
-        scales: {
-            y: {
-                display: false,
-                grid:{display: false, showLabelBackdrop:true}, 
-                }, //as ScaleOptions<'linear'>,
-            
-            x : {
-                display:false,
-                grid: { display: false, showLabelBackdrop:true },   
-            }
-        },   
-    }
-
-    const chartData = {
-        labels: spendingCategories,
-        datasets: [
-            {
-                data: categoryCount, 
-                backgroundColor: [
-                    "#6ee7b7","#34d399", "#10b981",
-                    "#5eead4","#2dd4bf", "#14b8a6",
-                    "#fda4af","#fb7185", "#f43f5e",
-                ],   
-                datalabels: {
-                    anchor: 'end',
-                    backgroundColor: '#6ee7b7',
-                    borderRadius: 360
-                  }             
-            },
-    ]}
-
-    return (
-        <div className='flex justify-center h-80 w-full '>
-            <Doughnut data={chartData} options={options} />
-        </div>
-
-    )
 }
+
 
 export default SpendingChart;

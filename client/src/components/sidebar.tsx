@@ -25,7 +25,7 @@ const Sidebar = () => {
             </div>
 
             {/* Mobile screen navbar */}
-                <div className="p-1 w-full fixed bg-black flex flex-row justify-center lg:hidden">
+                <div className="z-10 p-1 w-full fixed bg-black flex flex-row justify-center lg:hidden">
                     <Link to="/" className="p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-400">
                         <img className="w-12 h-12" src={dashboardIcon} alt="Dashboard Icon" />
                         {/* <h2 className="ms-3"> Dashboard </h2> */}
