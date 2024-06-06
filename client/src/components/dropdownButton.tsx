@@ -34,29 +34,34 @@ const DropdownButton:React.FC<dropdownProp> = ({dropdownDataType, dropdownData, 
     }
 
     return (
-        <div className='relative overflow-hidden w-full flex flex-col justify-start'>
-            <button
-                onClick={toggleDropdown}
-                className="text-white focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center"
-                type="button"
-            >
-                Selected {`${dropdownDataType} : ${dropdownDataType === "Account" ? selectedAccountName: selectedData}` }
-                <svg
-                    className="w-2.5 h-2.5 ms-3"
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 10 6"
+        <div className='relative w-full flex flex-col pr-3'>
+            <div className='flex flex-row items-center justify-between w-full'>
+                <button
+                    onClick={toggleDropdown}
+                    className="text-white text-left text-nowrap overflow-hidden focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 inline-flex items-center"
+                    type="button"
                 >
-                    <path
-                        stroke="currentColor"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="m1 1 4 4 4-4"
-                    />
-                </svg>
-            </button>
+                    Selected {`${dropdownDataType} : ${dropdownDataType === "Account" ? selectedAccountName: selectedData}` }
+                </button>
+
+                <svg
+                        onClick={toggleDropdown}
+                        className="w-2.5 h-2.5 ms-3 "
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 10 6"
+                    >
+                        <path
+                            stroke="currentColor"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="m1 1 4 4 4-4"
+                        />
+                    </svg>
+
+            </div>
             
             <div className={`${isOpen ? '' : 'hidden'} h-52 oveflow-hidden flex justify-center`}>
                 <ul className="h-2/3 absolute p-3 flex flex-col divide-y-2 divide-gray-500 bg-slate-400 overflow-scroll overflow-x-hidden text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">

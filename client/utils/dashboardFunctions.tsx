@@ -9,7 +9,7 @@ export const getBalanceAndTransactions = async(accountId:string, month:number, d
           accessToken: sessionStorage.getItem('accessToken'),
           accountId: accountId,
           dataTypeToGet: dataTypeToGet,
-          monthNumber: month
+          monthNumber: month,
         }),
       }
       
@@ -50,4 +50,31 @@ export const getTransactionCategoryCount = (categories:string[]) => {
     countTable.set(element, (countTable.get(element) ?? 0) + 1);
   });
   return countTable;
+}
+
+
+export const getIncomingOutgoing = async(accountId:string, month:number, dataTypeToGet:string) => {
+  try{
+
+    const allIncoming:number[] = []
+    const allOutgoing:number[] = []
+
+    const allTransactions:transactionsProp[] = await getBalanceAndTransactions(accountId, month, dataTypeToGet )
+
+    allTransactions.forEach(transaction => {
+      if('amount' in transaction && transaction.amount > 0){
+        allIncoming.push(transaction.amount);
+      }else{
+        allOutgoing.push(transaction.amount);
+      }
+    });
+
+    return {
+      incoming: allIncoming,
+      outgoing: allOutgoing,
+    };
+
+  }catch(error){
+    console.log("Error getting incoming and outgoing transactions" )
+  }
 }

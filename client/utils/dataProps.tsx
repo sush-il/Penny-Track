@@ -34,6 +34,11 @@ export interface dropdownProp {
     setChoiceCallback: Dispatch<SetStateAction<string>>
 }
 
+export interface incomingOutgoingProp{
+    incoming: number[]
+    outgoing: number[]
+}
+
 export interface providerDetailProp {
     displayName: string,
     providerId: string,
