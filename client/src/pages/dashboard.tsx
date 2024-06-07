@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { accountDetailProp, accountBalanceProp, transactionsProp, dropdownAccountProp, incomingOutgoingProp } from "../../utils/dataProps";
+import { accountDetailProp, transactionsProp, dropdownAccountProp, incomingOutgoingProp } from "../../utils/dataProps";
 import { getBalanceAndTransactions,  getSpendingCategories, calculateTotalSpending, getTransactionCategoryCount, getIncomingOutgoing } from "../../utils/dashboardFunctions";
 import DropdownButton from "../components/dropdownButton";
 import SpendingChart from "../components/spendingChart";
@@ -15,7 +15,7 @@ const Dashboard: React.FC<{accounts:accountDetailProp[]}> = ({accounts}) => {
   const [totalSpending, setTotalSpending] = useState(0);
   const [transactionCategoryCounts, setTransactionCategoryCounts] = useState<Map <string, number>>(new Map());
 
-  const [incomingOutgoing, setIncomingOutgoing] = useState<incomingOutgoingProp>({incoming: [1], outgoing:[1]});
+  const [incomingOutgoing, setIncomingOutgoing] = useState<incomingOutgoingProp>({incoming: [0], outgoing:[0]});
   
   
   const months = ["January", "Feburary", "March", "April", "May", "June", "July", "August", "September", "November", "December"]
@@ -64,49 +64,47 @@ const Dashboard: React.FC<{accounts:accountDetailProp[]}> = ({accounts}) => {
 
       setAccountTransactions(transactionsData);
       setTotalBalance(balanceData[0].available)
-      setIncomingOutgoing(incomingOutgoingData);
+      incomingOutgoingData && setIncomingOutgoing(incomingOutgoingData);
 
     }catch(error){
       console.log("Couldn't get Balance and Transactions")
     }
   };
 
-  // w-full min-h-screen grid grid-rows-2 grid-cols-1 gap-3 md:grid-cols-2
-
   return (
     <div className="ww-full min-h-screen grid grid-rows-2 grid-cols-1 gap-3 lg:grid-cols-2">
       <div className="inline-grid grid-rows-2 grid-cols-1 p-2 gap-3 md:grid-cols-2">     
-        <div className="bg-green-400 rounded-md p-2 shadow-md shadow-slate-200 drop-shadow-xl">
-          <p className="text-xl"> Total Balance </p>
-          <p className="text-2xl"> £ {totalBalance} </p>
+        <div className="bg-inherit bg-opacity-80 rounded-md p-2 flex flex-col justify-center items-center">
+          <p className="text-4xl font-bold text-teal-400"> Total Balance </p>
+          <p className="text-8xl font-bold"> £ {Math.round(totalBalance*100)/100} </p>
         </div>
 
-        <div className="bg-green-400 rounded-md p-2">
-          <p className="text-xl"> Total Balance </p>
-          <p className="text-2xl"> £ {totalSpending} </p>
+        <div className="bg-red-400 bg-opacity-80 rounded-md p-2 flex flex-col justify-center items-center">
+          <p className="text-4xl font-bold p-2"> Total Spend </p>
+          <p className="text-4xl font-bold "> £ {Math.round(totalSpending*100)/100} </p>
         </div>
 
-        <div className="bg-green-400 rounded-md p-2">
-          <p className="text-xl"> Total Balance </p>
-          <p className="text-2xl"> £ {totalBalance} </p>
+        <div className="bg-red-400 bg-opacity-80 rounded-md p-2 flex flex-col justify-center items-center">
+          <p className="text-4xl font-bold p-2"> Total Balance </p>
+          <p className="text-4xl font-bold"> £ {Math.round(totalSpending*100)/100} </p>
         </div>
 
-        <div className="bg-green-400 rounded-md pt-2 pl-0">
+        <div className="bg-red-400 bg-opacity-80 rounded-md pt-2 flex flex-col justify-center items-center">
           <DropdownButton dropdownDataType="Account" dropdownData={allAccountNamesAndIds} setChoiceCallback={setChosenAccount} />
           <DropdownButton dropdownDataType="Month" dropdownData={months} setChoiceCallback={setChosenMonth} />
         </div>
       </div>
 
       <div className="w-full">
-        <h2 className="text-xl"> Spending Breakdown </h2>
-        <div className="container my-3 h-96">
+        <h2 className="text-4xl text-left p-3 font-bold md:text-center"> Spending Breakdown </h2>
+        <div className="container my-3 h-96 w-full p-1">
           <SpendingChart spendingCategories={[...transactionCategoryCounts.keys()]} categoryCount={[...transactionCategoryCounts.values()]} />
         </div>
       </div>
 
-      <div className="w-full h-96 lg:col-span-2">
-        <h2 className="text-2xl"> Incoming vs Outgoing Transactions </h2>
-        <IncomingOutgoingChart incoming={incomingOutgoing?.incoming} outgoing={incomingOutgoing.outgoing}  />
+      <div className="w-full h-96 lg:col-span-2 lg:text-center p-2">
+        <h2 className="text-4xl font-bold"> Incoming vs Outgoing Transactions </h2>
+        <IncomingOutgoingChart incoming={incomingOutgoing.incoming} outgoing={incomingOutgoing.outgoing}  />
       </div>
 
       {/* <div className="">

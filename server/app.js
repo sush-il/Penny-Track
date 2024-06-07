@@ -106,6 +106,15 @@ app.post("/getBalanceAndTransactions", async(req,res) => {
     const dataTypeToGet = req.body.dataTypeToGet;
     const getDataFrom = `${currentYear}-${req.body.monthNumber}-01`;
     const getDataTo = `${currentYear}-${req.body.monthNumber}-31`;
+
+    const startMonth = req.body.startMonth;
+    const endMonth = req.body.endMonth;
+
+    if(startMonth && endMonth){
+        getDataFrom = `${currentYear}-${startMonth}-01`;
+        getDataTo = `${currentYear}-${endMonth}-31`;
+    }
+
     const options = {
         method: "GET",
         url: `https://api.truelayer.com/data/v1/accounts/${accountId}/${dataTypeToGet}?from=${getDataFrom}&to=${getDataTo}`,

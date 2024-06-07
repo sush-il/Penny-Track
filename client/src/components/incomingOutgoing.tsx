@@ -31,7 +31,7 @@ const IncomingOutgoingChart:React.FC<incomingOutgoingProp> = ({incoming, outgoin
             data={data}
             margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
             enableGridX={false}
-            // enableGridY={false}
+            enableGridY={false}
             xScale={{ type: 'linear', min: 1, max: Math.max(incomingData.length, outgoingData.length) }} // Adjust scale as necessary
             yScale={{ type: 'linear', min: 'auto', max: 'auto' }}
             axisBottom={null}
@@ -48,6 +48,18 @@ const IncomingOutgoingChart:React.FC<incomingOutgoingProp> = ({incoming, outgoin
             tooltip={({point}) => (
                 <strong className={`bg-red-400 p-2 rounded`}> {point.data.yFormatted} </strong>   
               )}
+            
+            theme={{
+                axis: {
+                    ticks: {
+                        text: { fill: '#e2e8f0' }
+                    },
+
+                    legend: {
+                        text: { fill: '#e2e8f0' }
+                    }
+                }
+            }}
             legends={[
                 {
                     anchor: 'bottom',
