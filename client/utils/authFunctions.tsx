@@ -1,4 +1,3 @@
-import { redirect } from "react-router-dom";
 
 //Handling user login
 export const authorizeUser = async (username:string, password:string) => {
@@ -15,7 +14,10 @@ export const authorizeUser = async (username:string, password:string) => {
       if(username && password){
         const response = await fetch('http://localhost:5000/authenticate',options);
         const data = await response.json()
-        if(data.redirect===true){window.location.href = "http://localhost:5000/login";}
+        if(data.redirect===true){
+          
+          window.location.href = "http://localhost:5000/login";
+        }
         else{return data.message};
       }
     }catch(error){

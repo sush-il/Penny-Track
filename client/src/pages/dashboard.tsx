@@ -18,7 +18,8 @@ const Dashboard: React.FC<{accounts:accountDetailProp[]}> = ({accounts}) => {
   const [incomingOutgoing, setIncomingOutgoing] = useState<incomingOutgoingProp>({incoming: [0], outgoing:[0]});
   
   
-  const months = ["January", "Feburary", "March", "April", "May", "June", "July", "August", "September", "November", "December"]
+  const months = ["January", "Feburary", "March", "April", "May", "June", 
+                  "July", "August", "September", "November", "December"]
   
   const getAllAccountNamesAndIds = () => {
     if (accounts.length !== 0) {
@@ -75,8 +76,8 @@ const Dashboard: React.FC<{accounts:accountDetailProp[]}> = ({accounts}) => {
     <div className="ww-full min-h-screen grid grid-rows-2 grid-cols-1 gap-3 lg:grid-cols-2">
       <div className="inline-grid grid-rows-2 grid-cols-1 p-2 gap-3 md:grid-cols-2">     
         <div className="bg-inherit bg-opacity-80 rounded-md p-2 flex flex-col justify-center items-center">
-          <p className="text-4xl font-bold text-teal-400"> Total Balance </p>
-          <p className="text-8xl font-bold"> £ {Math.round(totalBalance*100)/100} </p>
+          <p className="text-4xl w-full font-bold text-teal-400"> Total Balance </p>
+          <p className="text-7xl font-bold"> £ {Math.round(totalBalance*100)/100} </p>
         </div>
 
         <div className="bg-red-400 bg-opacity-80 rounded-md p-2 flex flex-col justify-center items-center">

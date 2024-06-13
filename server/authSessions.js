@@ -1,6 +1,7 @@
 const session = require('express-session');
 const bcrypt = require('bcrypt');
-const {sequelize, User} = require('./models/userModel');
+const { sequelize } = require('./db');
+const User = require('./models/userModel')(sequelize);
 require('dotenv').config()
 
 const secretKey = process.env.SECRET_KEY
@@ -15,7 +16,7 @@ const authorize = async (enteredUsername, enteredPassword) => {
 
         if(user){
             const isPasswordValid = await bcrypt.compare(enteredPassword, user.password);
-            if(isPasswordValid) return true; //correct password
+            if(isPasswordValid) return {id:user.id, username:user.username}; //correct password
             else return false; //wrong password
         }else return null; //user doen't exist
 
@@ -49,10 +50,15 @@ const register = async(enteredUsername, enteredPassword) => {
 
 module.exports = (app) => {
     app.use(session({
+        // store: new MemoryStore({ checkPeriod: 86400000 }), // 24 hours
         secret: secretKey,
         resave: false,
         saveUninitialized: true,
-        cookie: { secure: false } // Set secure to true if using HTTPS
+        cookie: {         
+            secure: false, // Set to true if using HTTPS
+            maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days in milliseconds
+            httpOnly: true,
+            sameSite: 'lax' } 
       }));
 
 
@@ -64,7 +70,16 @@ module.exports = (app) => {
             const response = await authorize(enteredUsername, enteredPassword);
             if(response === null){res.json({message: 'User does not exist', redirect: false})}
             else if (!response) {res.json({message: 'Incorrect Password', redirect: false})}
-            else if(response){res.json({message: 'User Authenticated', redirect:true})}
+            else if(response){
+                if(req.session.user){
+                    console.log("Session exists");
+                    res.json({message: 'User Authenticated', redirect:true})
+                }
+                else{
+                    req.session.user = response;
+                    res.json({message: 'User Authenticated', redirect:true})
+                }
+            }
         }catch(error){
             console.log('Authentication Problem: ' + error )
         }

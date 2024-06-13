@@ -1,19 +1,8 @@
-const { Sequelize, DataTypes } = require('sequelize');
-const config = require('./config');
-const sequelize = new Sequelize(config['development']);
+const { DataTypes } = require('sequelize');
 const bcrypt = require('bcrypt');
 
-const User = sequelize.define(
-  'User',
-  {
-    // firstName: {
-    //   type: DataTypes.STRING,
-    //   allowNull: false,
-    // },
-    // lastName: {
-    //   type: DataTypes.STRING,
-    //   allowNull:false,
-    // },
+module.exports = (sequelize) => {
+  const User = sequelize.define('User', {
     username: {
       type: DataTypes.STRING,
       unique: true,
@@ -22,25 +11,21 @@ const User = sequelize.define(
     password: {
       type: DataTypes.STRING,
       allowNull: false,
+      // Uncomment the below validation if password validation is required
       // validate: {
-      //   is: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/
+      //   is: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/,
       // }
     },
-  },
-);
+  });
 
-User.beforeCreate(async (user) => {
-  try{
-    const hashedPassword = await bcrypt.hash(user.password, 10);
-    user.password = hashedPassword;
-  } catch(error){
-    console.error("User password couldn't be hashed: " + error);
-  }
-})
+  User.beforeCreate(async (user) => {
+    try {
+      const hashedPassword = await bcrypt.hash(user.password, 10);
+      user.password = hashedPassword;
+    } catch (error) {
+      throw new Error("User password couldn't be hashed: " + error.message);
+    }
+  });
 
-// createUser(mockUser);
-
-module.exports = {
-  sequelize,
-  User
+  return User;
 };

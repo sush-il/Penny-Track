@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react"
 
-const MiniStockChart = () => {
+const MiniStockChart:React.FC<{tickerSymbol:string}> = ({tickerSymbol}) => {
     const containerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -8,7 +8,7 @@ const MiniStockChart = () => {
       script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js';
       script.async = true;
       script.innerHTML = JSON.stringify({
-        symbol: 'BITSTAMP:BTCUSD',
+        symbol: tickerSymbol,
         width: '100%',
         height: '100%',
         locale: 'en',

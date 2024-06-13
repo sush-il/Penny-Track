@@ -2,15 +2,24 @@ const express = require('express');
 const cors = require('cors')
 const axios = require('axios')
 const app = express();
-const port = process.env.PORT || "5000"
-const { sequelize } = require('./models/userModel');
+const { Sequelize } = require('sequelize');
 const authSessions = require('./authSessions');
+const favTicker = require('./favTickers');
+const config = require('./models/config');
+const port = process.env.PORT || "5000"
+// const sequelize = new Sequelize(config.development);
+
+const { syncModels } = require('./db');
 
 require('dotenv').config();
 app.use(express.json());
 app.use(cors());
 
 authSessions(app);
+favTicker(app);
+
+
+
 const liveClientID = process.env.LIVE_CLIENT_ID;
 const liveClientSecret = process.env.LIVE_CLIENT_SECRET;
 const redirectURI = process.env.REDIRECT_URI;
@@ -149,10 +158,12 @@ app.post("/getBalanceAndTransactions", async(req,res) => {
     }
 })
 
-sequelize.sync().then(() => {
-  app.listen(port, () => {
-    console.log(`Server running on http://localhost:${port}`);
+syncModels()
+  .then(() => {
+    app.listen(port, () => {
+      console.log(`Server running on http://localhost:${port}`);
+    });
+  })
+  .catch(err => {
+    console.error('Unable to synchronize models:', err);
   });
-}).catch(err => {
-  console.error('Unable to connect to the database:', err);
-});
