@@ -4,6 +4,8 @@ import { getBalanceAndTransactions,  getSpendingCategories, calculateTotalSpendi
 import DropdownButton from "../components/dropdownButton";
 import SpendingChart from "../components/spendingChart";
 import IncomingOutgoingChart from "../components/incomingOutgoing";
+import NetWorthGoal from "../components/networthGoal";
+
 
 const Dashboard: React.FC<{accounts:accountDetailProp[]}> = ({accounts}) => {
   const [chosenMonth, setChosenMonth] = useState("");
@@ -86,8 +88,7 @@ const Dashboard: React.FC<{accounts:accountDetailProp[]}> = ({accounts}) => {
         </div>
 
         <div className="bg-red-400 bg-opacity-80 rounded-md p-2 flex flex-col justify-center items-center">
-          <p className="text-4xl font-bold p-2"> Total Balance </p>
-          <p className="text-4xl font-bold"> £ {Math.round(totalSpending*100)/100} </p>
+          <NetWorthGoal />
         </div>
 
         <div className="bg-red-400 bg-opacity-80 rounded-md pt-2 flex flex-col justify-center items-center">
@@ -107,11 +108,6 @@ const Dashboard: React.FC<{accounts:accountDetailProp[]}> = ({accounts}) => {
         <h2 className="text-4xl font-bold"> Incoming vs Outgoing Transactions </h2>
         <IncomingOutgoingChart incoming={incomingOutgoing.incoming} outgoing={incomingOutgoing.outgoing}  />
       </div>
-
-      {/* <div className="">
-        <h2> Spending Breakdown </h2>
-        <SpendingChart spendingCategories={[...transactionCategoryCounts.keys()]} categoryCount={[...transactionCategoryCounts.values()]} />
-      </div> */}
 
     </div>
   )

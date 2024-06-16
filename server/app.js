@@ -2,12 +2,10 @@ const express = require('express');
 const cors = require('cors')
 const axios = require('axios')
 const app = express();
-const { Sequelize } = require('sequelize');
+// const { Sequelize } = require('sequelize');
 const authSessions = require('./authSessions');
 const favTicker = require('./favTickers');
-const config = require('./models/config');
 const port = process.env.PORT || "5000"
-// const sequelize = new Sequelize(config.development);
 
 const { syncModels } = require('./db');
 

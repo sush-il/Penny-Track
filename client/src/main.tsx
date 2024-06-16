@@ -6,6 +6,9 @@ import './index.css'
 import SignupSection from './pages/signupPage.tsx'
 import Login from './pages/login.tsx'
 import MarketView from './pages/marketView.tsx'
+import {AuthProvider} from "../utils/authContext.tsx";
+
+const isUserAuthenticated = sessionStorage.getItem('authenticatedUserId');
 
 const router = createBrowserRouter([
   {
@@ -18,7 +21,7 @@ const router = createBrowserRouter([
   },
   {
     path:"/marketView",
-    element: <MarketView />
+    element: isUserAuthenticated? <MarketView /> : <Login />
   },
   {
     path: "/register",
@@ -32,6 +35,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
   </React.StrictMode>,
 )

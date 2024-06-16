@@ -11,10 +11,10 @@ module.exports = (sequelize) => {
     password: {
       type: DataTypes.STRING,
       allowNull: false,
-      // Uncomment the below validation if password validation is required
-      // validate: {
-      //   is: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/,
-      // }
+      // validation if password validation is required
+      validate: {
+        is: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/,
+      }
     },
   });
 

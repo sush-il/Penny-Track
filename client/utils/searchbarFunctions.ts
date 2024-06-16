@@ -1,28 +1,30 @@
+const authenticatedUserId = sessionStorage.getItem("authenticatedUserId")
+
 const addTickerToFavourites = async (tickerSymbol:string) => {
     const options = {
         method: "POST",
         headers: { 'Content-Type': 'application/json' },
         body:JSON.stringify({
-            authenticatedUserId: 1,
+            authenticatedUserId: authenticatedUserId,
             tickerSymbol: tickerSymbol
         })
       }
     try{
         const response = await fetch("http://localhost:5000/addToFav", options);
         const data = await response.json();
-        return data.message;
+        return data;
    
     }catch(error){
         console.log("Couldn't add ticker to favourites: " + error)
     }
 }
 
-const getAllFavouriteTickers = async(authenticatedUserId?:Number) =>{
+const getAllFavouriteTickers = async() =>{
     const options = {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
-            authenticatedUserId: 1,
+            authenticatedUserId: authenticatedUserId,
         })
     }
     try{
@@ -36,12 +38,12 @@ const getAllFavouriteTickers = async(authenticatedUserId?:Number) =>{
     }
 }
 
-const removeTickerFromFavourites = async (ticker:string, authenticatedUserId?:Number) => {
+const removeTickerFromFavourites = async (ticker:string) => {
     const options = {
         method: 'POST',
         headers: {'Content-Type' : 'application/json'},
         body: JSON.stringify({
-            authenticatedUserId: 1,
+            authenticatedUserId: authenticatedUserId,
             ticker: ticker
         })
     }

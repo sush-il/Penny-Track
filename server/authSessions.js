@@ -49,6 +49,7 @@ const register = async(enteredUsername, enteredPassword) => {
 }
 
 module.exports = (app) => {
+    // This doesn't reallly work for what i was trying to achieve
     app.use(session({
         // store: new MemoryStore({ checkPeriod: 86400000 }), // 24 hours
         secret: secretKey,
@@ -72,12 +73,11 @@ module.exports = (app) => {
             else if (!response) {res.json({message: 'Incorrect Password', redirect: false})}
             else if(response){
                 if(req.session.user){
-                    console.log("Session exists");
-                    res.json({message: 'User Authenticated', redirect:true})
+                    res.json({message: 'User Authenticated', userId:response.id, redirect:true})
                 }
                 else{
                     req.session.user = response;
-                    res.json({message: 'User Authenticated', redirect:true})
+                    res.json({message: 'User Authenticated',userId:response.id, redirect:true})
                 }
             }
         }catch(error){

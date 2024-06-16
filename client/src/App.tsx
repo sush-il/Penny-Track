@@ -10,7 +10,7 @@ function App() {
   const [accounts, setAccounts] = useState<accountDetailProp[]>([]);
   const [gotAccessToken, setGotAccessToken] = useState("");
   const sessionStorageAccessToken = sessionStorage.getItem('gotAccessToken');
-
+  
   useEffect(() => {
     const code = new URLSearchParams(window.location.search).get("code");
     // If not access token get it from the given code

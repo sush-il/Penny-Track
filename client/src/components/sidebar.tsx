@@ -19,10 +19,6 @@ const Sidebar = () => {
                         <h2 className="ms-3"> Market</h2>
                     </Link>
 
-                    {/* <Link to="" className="flex flex-row place-items-center w-full text-gray-900 rounded-lg dark:text-white hover:bg-gray-400">
-                        <img className="w-12 h-12" src={dashboardIcon} alt="Dashboard Icon" />
-                        <h2 className="ms-3"> Dashboard </h2>
-                    </Link> */}
                 </div>
             </div>
 
@@ -34,13 +30,8 @@ const Sidebar = () => {
                     </Link>
                     
                     <Link to="/marketView" className="p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-400">
-                        <img className="w-12 h-12" src={dashboardIcon} alt="Dashboard Icon" />
-                        {/* <h2 className="ms-3"> Dashboard </h2> */}
-                    </Link>
-
-                    <Link to="" className="p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-400">
-                        <img className="w-12 h-12" src={dashboardIcon} alt="Dashboard Icon" />
-                        {/* <h2 className="ms-3"> Dashboard </h2> */}
+                        <img className="w-12 h-12 invert" src={trendIcon} alt="Dashboard Icon" />
+                        {/* <h2 className="ms-3"> Market</h2> */}
                     </Link>
                 </div>
         </div>

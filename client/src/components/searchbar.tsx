@@ -5,11 +5,12 @@ import { Dispatch, SetStateAction } from 'react';
 import {addTickerToFavourites} from "../../utils/searchbarFunctions";
 
 interface searchBarProps{
+    setAllFavouritedTickers?: Dispatch<SetStateAction<string[]>>;
     setSelectedTicker?: Dispatch<SetStateAction<string>>;
     handleForwardButtonClick? : (selectedTicker:string) => void;
 }
 
-const SearchBar:React.FC<searchBarProps> = ({ setSelectedTicker, handleForwardButtonClick })  => {
+const SearchBar:React.FC<searchBarProps> = ({ setSelectedTicker, handleForwardButtonClick, setAllFavouritedTickers })  => {
     const [searchTerm, setSearchTerm] = useState("");
     const [filteredTickers, setFilteredTickers] = useState(tickers);
 
@@ -29,16 +30,16 @@ const SearchBar:React.FC<searchBarProps> = ({ setSelectedTicker, handleForwardBu
     }
 
     const handleFavourites = async (ticker:string) => {
+        setSearchTerm("");
         try{
             const response = await addTickerToFavourites(ticker);
-        }catch{
-
-        }
+            if(!response.alreadyExists) {
+                setAllFavouritedTickers && setAllFavouritedTickers(prevTickers => [...prevTickers, ticker]);
+            }
+        }catch(error){
+            console.error(error);
+        }   
     }
-
-    // useEffect(()=>{
-
-    // },[])
 
     return(  
         <div className="w-full p-3">   
@@ -58,7 +59,6 @@ const SearchBar:React.FC<searchBarProps> = ({ setSelectedTicker, handleForwardBu
                             <div className="bg-background bg-opacity-80 p-2 rounded-lg flex flex-row w-full items-center">
                                 <SingleTicker key={index} symbol={ticker} />
                                 <div className="flex flex-col p-1">
-                                {/* onClick={()=>handleForwardButtonClick(ticker)} */}
                                     <button onClick={()=>handleButtonClick(ticker)}  className="bg-teal-400 p-1 rounded w-full flex justify-center hover:bg-teal-300">
                                         <svg 
                                             className="w-6 h-6"

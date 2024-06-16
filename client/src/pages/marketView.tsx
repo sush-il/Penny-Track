@@ -39,15 +39,12 @@ const MarketView = () => {
     };
 
     const removeFavouriteTicker = async (ticker: string) => {
-        console.log("List of all tickers: " + allFavouritedTickers );
         try {
             const tickerRemoved = await removeTickerFromFavourites(ticker);
             if (tickerRemoved) {
-                // setAllFavouritedTickers([]);
                 const tickersWithFavRemoved = allFavouritedTickers.filter(t => t !== ticker)
                 setAllFavouritedTickers(tickersWithFavRemoved);
             }
-            console.log("Updated Tickers after removal:", allFavouritedTickers);
         } catch (error) {
             console.log("Error removing ticker", error);
         }
@@ -70,7 +67,7 @@ const MarketView = () => {
         <div className="w-full min-h-screen flex flex-row bg-background text-text lg:h-screen">
             <Sidebar />
             <div className="w-full p-3 flex flex-col">
-                <SearchBar setSelectedTicker={setSelectedTicker} handleForwardButtonClick={handleForwardButtonClick} />
+                <SearchBar setAllFavouritedTickers={setAllFavouritedTickers} setSelectedTicker={setSelectedTicker} handleForwardButtonClick={handleForwardButtonClick} />
                 <div className="flex flex-row gap-2 p-3 h-5/6">
                     <div className={`${miniChartStatus} w-full gap-3 flex flex-col lg:w-1/3 lg:overflow-y-scroll`}>
                         {allFavouritedTickers.map((ticker, index) => (

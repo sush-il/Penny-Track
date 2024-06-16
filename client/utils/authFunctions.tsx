@@ -1,4 +1,3 @@
-
 //Handling user login
 export const authorizeUser = async (username:string, password:string) => {
     const options = {
@@ -15,8 +14,9 @@ export const authorizeUser = async (username:string, password:string) => {
         const response = await fetch('http://localhost:5000/authenticate',options);
         const data = await response.json()
         if(data.redirect===true){
-          
-          window.location.href = "http://localhost:5000/login";
+          window.location.href = "http://localhost:5000/login";  
+          sessionStorage.setItem("authenticatedUserId", data.userId);
+          // return username;
         }
         else{return data.message};
       }
