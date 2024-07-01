@@ -40,6 +40,21 @@
 - **Persistent Login Sessions**: Addressing the issue of maintaining user login states over extended periods.
 - **Removing Favorites**: Functionality to remove favorites from the marketview isn't working as intended; only in frontend, removing from database is as required
 
+## Installation
+If you would like a local installation of the project follow these steps:
+
+- Clone the repository: git clone https://github.com/sush-il/Penny-Track.git
+- Navigate to the project directory and run `npm install` on the terminal to install all dependencies
+- Set up your TrueLayer API account and obtain client id and client secret. (Ensure this is for Live Environment as the sandbox environment requires different settings)
+- Create a .env file in the project's server directory and add the following information:
+    - `LIVE_CLIENT_ID = ...`
+    - `LIVE_CLIENT_SECRET = ...`
+    - `REDIRECT_URI = ...` (must be same as the one in TrueLayers API account)
+    - `SECRET_KEY = ...` (this is for express-sessions; but the feature isn't completed atm)
+
+- Run the client and server
+    - `npm run dev`
+
 
 <img width="600" src="https://github.com/sush-il/Penny-Track/assets/34659821/f29bc4d7-3a75-4ce6-9fd6-9f2124622b90" />
 <img width="600" src="https://github.com/sush-il/Penny-Track/assets/34659821/a2f3f82a-e591-4eb2-94cd-a0ac7191fe46" />
