@@ -50,7 +50,7 @@
 - **Tailwind CSS**: Explored and implemented Tailwind CSS for styling, achieving a streamlined and responsive design.
 - **ORM Models**: Utilized Sequelize ORM for defining and managing database models, facilitating easier data manipulation.
 - **Custom Authentication Flow**: Implemented a custom authentication system, learning essential techniques for user login and session management.
-Database Implementation: Gained insights into effective database strategies and authentication methods.
+- **Database Implementation**: Gained insights into effective database strategies and authentication methods.
 
 ### Problems Encountered and Changes Made
 Passport.js Decision: Opted against using Passport.js initially due to complexity in integration.
@@ -60,3 +60,18 @@ Understanding Express-Sessions: Improved understanding and usage of Express-Sess
 ### Current Challenges
 Persistent Login Sessions: Addressing the issue of maintaining user login states over extended periods.
 Removing Favorites: Implementing correct functionality to remove favorites within the market view section.
+
+## Installation
+If you would like a local installation of the project follow these steps:
+
+- Clone the repository: git clone https://github.com/sush-il/Penny-Track.git
+- Navigate to the project directory and run `npm install` on the terminal to install all dependencies
+- Set up your TrueLayer API account and obtain client id and client secret. (Ensure this is for Live Environment as the sandbox environment requires different settings)
+- Create a .env file in the project's server directory and add the following information:
+    - `LIVE_CLIENT_ID = ...`
+    - `LIVE_CLIENT_SECRET = ...`
+    - `REDIRECT_URI = ...` (must be same as the one in TrueLayers API account)
+    - `SECRET_KEY = ...` (this is for express-sessions; but the feature isn't completed atm)
+
+- Run the client and server
+    - `npm run dev`
