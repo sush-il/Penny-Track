@@ -61,3 +61,5 @@ If you would like a local installation of the project follow these steps:
 <img width="600" src="https://github.com/sush-il/Penny-Track/assets/34659821/a162949c-3c90-4675-ab95-ea8d9b355e5a" />
 
 
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/gxax2yfdenI&t=1766s/0.jpg)](https://www.youtube.com/watch?v=gxax2yfdenI&t=1766s)
+
